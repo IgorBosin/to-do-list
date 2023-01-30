@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import TasksList from "./TasksList";
 
 type TodolistPropsType = {
@@ -13,7 +13,7 @@ export type TaskType = {
     isDone: boolean;
 }
 
-const TodoList = (props: TodolistPropsType) => {
+const TodoList: FC<TodolistPropsType> = (props: TodolistPropsType) => {
     return (
         <div>
             <div className={'TodoList'}>

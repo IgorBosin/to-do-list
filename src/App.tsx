@@ -3,18 +3,16 @@ import './App.css';
 import TodoList, {TaskType} from "./TodoList";
 // rsc - создать компоненту
 
-function App() {
-    //BLL:
-    const todoListTitle: string = 'what to learn'
-    const tasks: Array<TaskType> = [
-        {id: 1, title: 'HTML&CSS', isDone: true},
-        {id: 2, title: 'ES6 & TS', isDone: true},
-        {id: 3, title: 'React & Redux', isDone: false},
-    ]
+type propsType = {
+    tasks: Array<TaskType>
+    todoListTitle: String
+}
+
+function App(props: propsType) {
     //UI:
     return (
         <div className="App">
-            <TodoList title={todoListTitle} tasks={tasks}/>
+            <TodoList title={props.todoListTitle} tasks={props.tasks}/>
         </div>
     );
 }
