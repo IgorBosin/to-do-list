@@ -1,11 +1,14 @@
 import React, {FC} from 'react';
-import {TaskType} from "./TodoList";
 
 type TasksListPropsType = {
-    tasks: TaskType[]
+    tasks: Array<{
+        id: number;
+        title: String;
+        isDone: boolean;
+    }>
 }
 
-const TasksList: FC<TasksListPropsType> = (props: TasksListPropsType) => {
+const TasksList = (props: TasksListPropsType) => {
     const tasksItems: JSX.Element[] | JSX.Element = props.tasks.length
         ? props.tasks.map((task) => {
             return (

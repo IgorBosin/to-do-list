@@ -3,17 +3,15 @@ import TasksList from "./TasksList";
 
 type TodolistPropsType = {
     title: String;
-    tasks: Array<TaskType>
+    tasks: Array<{
+        id: number;
+        title: String;
+        isDone: boolean;
+    }>
     // tasks: TaskType[]
 }
 
-export type TaskType = {
-    id: number;
-    title: String;
-    isDone: boolean;
-}
-
-const TodoList: FC<TodolistPropsType> = (props: TodolistPropsType) => {
+const TodoList = (props: TodolistPropsType) => {
     return (
         <div>
             <div className={'TodoList'}>

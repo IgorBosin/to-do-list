@@ -2,8 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import {TaskType} from "./TodoList";
 
+type TaskType = {
+    id: number;
+    title: String;
+    isDone: boolean;
+}
 //BLL:
 const tasks: Array<TaskType> = [
     {id: 1, title: 'HTML&CSS', isDone: true},
@@ -13,13 +17,18 @@ const tasks: Array<TaskType> = [
 
 const todoListTitle: string = 'what to learn'
 
+const topCars = [
+    {manufacturer:'BMW', model:'m5cs'},
+    {manufacturer:'Mercedes', model:'e63s'},
+    {manufacturer:'Audi', model:'rs6'}
+]
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
     <React.StrictMode>
-        <App tasks={tasks} todoListTitle={todoListTitle}/>
+        <App tasks={tasks} todoListTitle={todoListTitle} cars={topCars}/>
     </React.StrictMode>
 );
 
