@@ -1,34 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import App, {TasksType} from './App';
 
-type TaskType = {
-    id: number;
-    title: String;
-    isDone: boolean;
-}
-//BLL:
-const tasks: Array<TaskType> = [
+const tasks: Array<TasksType> = [
     {id: 1, title: 'HTML&CSS', isDone: true},
     {id: 2, title: 'ES6 & TS', isDone: true},
     {id: 3, title: 'React & Redux', isDone: false},
 ]
 
-const todoListTitle: string = 'what to learn'
-
-const topCars = [
-    {manufacturer:'BMW', model:'m5cs'},
-    {manufacturer:'Mercedes', model:'e63s'},
-    {manufacturer:'Audi', model:'rs6'}
-]
+const titleTodoList: string = 'What to learn'
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
+
+const topCars = [
+    {manufacturer:'BMW', model:'m5cs', color: 'black'},
+    {manufacturer:'Mercedes', model:'e63s', color: 'red'},
+    {manufacturer:'Audi', model:'rs6', color: 'white'}
+]
+
 root.render(
     <React.StrictMode>
-        <App tasks={tasks} todoListTitle={todoListTitle} cars={topCars}/>
+        <App tasks={tasks} titleTodoList={titleTodoList} topCars={topCars} />
     </React.StrictMode>
 );
 

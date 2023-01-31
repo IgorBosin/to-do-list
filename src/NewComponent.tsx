@@ -1,42 +1,35 @@
 import React from 'react';
 
 type NewComponentType = {
-    cars: propsTypeCars[]
+    topCars: topCarsType[]
 }
 
-type propsTypeCars = {
+export type topCarsType = {
     manufacturer: string;
     model: string;
+    color: string;
 }
 
 const NewComponent = (props: NewComponentType) => {
-    debugger
+    const CheckNewComponentLength: JSX.Element[] | JSX.Element = props.topCars.length
+        ? props.topCars.map((carEl, index) => {
+                return (
+                    <tr key={index+1}>
+                        <th>index:{index+1} {carEl.manufacturer}</th>
+                        <td>{carEl.model}</td>
+                        <td>{carEl.color}</td>
+
+                    </tr>
+                )
+            })
+        : <>'Element empty'</>
+
     return (
-        <div>
-            <table>
-                <caption>Cars</caption>
-                <tr>
-                    {props.cars.map((carsEl, index) => {
-                        return (
-                            <th key={index+1}>{carsEl.manufacturer}</th>
-                        )
-                    })}
-                </tr>
-                <tr>
-                    {props.cars.map((carsEl,index)=>{
-                        return(
-                            <th key={index+1}>{carsEl.model}</th>
-                        )
-                    })}
-                </tr>
-            </table>
-        </div>
-    );
+        < table>
+            <caption> Top cars</caption>
+            <>{CheckNewComponentLength}</>
+        </table>
+    )
 };
 
 export default NewComponent;
-
-
-
-
-

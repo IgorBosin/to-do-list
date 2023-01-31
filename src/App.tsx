@@ -1,38 +1,28 @@
 import React from 'react';
 import './App.css';
 import TodoList from "./TodoList";
-import NewComponent from "./NewComponent";
-// rsc - создать компоненту
+import NewComponent, {topCarsType} from "./NewComponent";
 
-type propsType = {
-    tasks: Array<propsTypeTodoList>
-    todoListTitle: String
-    cars: propsTypeCars[]
-}
-
-type propsTypeTodoList = {
+export type TasksType = {
     id: number;
-    title: String;
+    title: string;
     isDone: boolean;
 }
 
-type propsTypeCars = {
-    manufacturer: string;
-    model: string;
+type AppType = {
+    // tasks: TasksType[]
+    tasks: Array<TasksType>
+    titleTodoList: string
+    topCars: topCarsType[]
 }
 
-function App(props: propsType) {
-    //UI:
+function App(props: AppType) {
     return (
         <div className="App">
-            <TodoList title={props.todoListTitle} tasks={props.tasks} />
-            <NewComponent cars={props.cars}/>
-
+            <TodoList tasks={props.tasks} titleTodoList={props.titleTodoList}/>
+            <NewComponent topCars={props.topCars}/>
         </div>
     );
 }
 
 export default App;
-
-
-

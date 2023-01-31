@@ -1,32 +1,28 @@
-import React, {FC} from 'react';
+import React from 'react';
 import TasksList from "./TasksList";
+import {TasksType} from "./App";
 
-type TodolistPropsType = {
-    title: String;
-    tasks: Array<{
-        id: number;
-        title: String;
-        isDone: boolean;
-    }>
-    // tasks: TaskType[]
+type TodolistType = {
+    titleTodoList: string;
+    tasks: TasksType[]
 }
 
-const TodoList = (props: TodolistPropsType) => {
+const TodoList = (props:TodolistType) => {
     return (
         <div>
-            <div className={'TodoList'}>
-                <h3>{props.title}</h3>
+            <div>
+                <h3>{props.titleTodoList}</h3>
                 <div>
                     <input/>
                     <button>+</button>
                 </div>
-                <TasksList tasks={props.tasks}/>
                 <div>
-                    <button>All</button>
-                    <button>Active</button>
-                    <button>Completed</button>
+                    <TasksList tasks={props.tasks} />
                 </div>
             </div>
+            <button> All</button>
+            <button>Active</button>
+            <button>Completed</button>
         </div>
     );
 };

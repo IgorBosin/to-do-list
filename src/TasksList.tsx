@@ -1,30 +1,22 @@
-import React, {FC} from 'react';
+import React from 'react';
+import {TasksType} from "./App";
 
-type TasksListPropsType = {
-    tasks: Array<{
-        id: number;
-        title: String;
-        isDone: boolean;
-    }>
+type TasksListType = {
+    tasks: TasksType[];
+
 }
 
-const TasksList = (props: TasksListPropsType) => {
-    const tasksItems: JSX.Element[] | JSX.Element = props.tasks.length
-        ? props.tasks.map((task) => {
-            return (
-                <li key={task.id}>
-                    <input type="checkbox" checked={task.isDone}/>
-                    <span>{task.title}</span>
-                </li>
-            )
-        })
-        : <span>Your taskslist is empty</span>
-
-    return (
-        <ul>
-            {tasksItems}
-        </ul>
-    );
+const TasksList = (props: TasksListType) => {
+    const checkLengthArray: JSX.Element | JSX.Element[] = props.tasks.length
+        ? props.tasks.map((todoListItem) => {
+                return (
+                    <li key={todoListItem.id}>
+                        <input type="checkbox" checked={todoListItem.isDone}/> <span>{todoListItem.title}</span>
+                    </li>
+                )
+            })
+        : <span>'Array is empty'</span>
+    return <>{checkLengthArray}</>
 };
 
 export default TasksList;
