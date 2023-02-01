@@ -1,22 +1,24 @@
-import React from 'react';
-import './App.css';
-import Button from "./Button";
+import React, {useState} from 'react';
 
-type AppType = {
-    bDel: (value: string) => void
-    objShow: (kyky: string, age: number) => void
-}
+const App = () => {
 
-function App(props: AppType) {
+    let [num, funNum] = useState(1)
+
+    const onClickHandler = () => {
+        funNum(++num)
+    }
+
+    const onClickNull = () => {
+        funNum(0)
+    }
+
     return (
-        <div className="App">
-            <Button bName='show' objShow={() =>
-                props.objShow('Igor', 18)}/>
-            <Button bName='delete' objShow={() =>
-                props.bDel('delete')}/>
+        <div>
+            <h1>{num}</h1>
+            <button onClick={onClickHandler}>number</button>
+            <button onClick={onClickNull}>null</button>
         </div>
     );
-}
-
+};
 
 export default App;
