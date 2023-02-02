@@ -1,11 +1,7 @@
 import React, {useState} from 'react';
-import button from "./Button";
+import NewComp from "./NewComp";
 
-type moneyArrayType = {
-    banknots: string;
-    value: number;
-    number: string
-}
+type currencyType = 'dol' | 'rub' | 'all'
 
 const App = () => {
 
@@ -20,30 +16,37 @@ const App = () => {
         {banknots: 'RUBLS', value: 50, number: ' v1234567890'},
     ])
 
-    let moneyRub = money.filter((mon:moneyArrayType) => mon.banknots=='RUBLS')
+    let [curr, setCurr] = useState<currencyType>('rub')
 
-    let onClickFilterHandler = (bankn:string) => {console.log(bankn)}
+    let filterBanknots = money
+    if(curr=='rub') {filterBanknots = money.filter((filt) =>
+        filt.banknots == 'RUBLS')}
+    if(curr=='dol') {filterBanknots = money.filter((filt) =>
+        filt.banknots == 'Dollars')}
+
+    let onClickHandler = (currency:currencyType) => {setCurr(currency)}
 
     return (
-        <div>
-            <ul>
-                {moneyRub.map((moneyArray: moneyArrayType, index) => {
-                    return (
-                        <li key={index}>
-                            <span> {moneyArray.banknots}</span>
-                            <span> {moneyArray.value}</span>
-                            <span> {moneyArray.number}</span>
-                        </li>
-                    )
-                })}
-            </ul>
-            <div style={{marginLeft: '35px'}}>
-                <button onClick={() => onClickFilterHandler('all')}>all</button>
-                <button onClick={() => onClickFilterHandler('rub')}>rub</button>
-                <button onClick={() => onClickFilterHandler('dol')}>dol</button>
-            </div>
-        </div>
+        <>
+            <NewComp arrMoney={money}/>
+            {/*<ul>*/}
+            {/*    {filterBanknots.map((item,index) => {*/}
+            {/*        return (*/}
+            {/*            <li key={index}>*/}
+            {/*                <span> {item.banknots}</span>*/}
+            {/*                <span> {item.value}</span>*/}
+            {/*                <span> {item.number}</span>*/}
+            {/*            </li>*/}
+            {/*        )*/}
+            {/*    })}*/}
+            {/*</ul>*/}
+            {/*<div>*/}
+            {/*    <button onClick={()=>onClickHandler('dol')}>doll</button>*/}
+            {/*    <button onClick={()=>onClickHandler('rub')}>rub</button>*/}
+            {/*    <button onClick={()=>onClickHandler('all')}>all</button>*/}
+            {/*</div>*/}
+        </>
+    );
+};
 
-    )
-}
 export default App;
