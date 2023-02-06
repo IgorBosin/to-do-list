@@ -1,52 +1,22 @@
-import React, {useState} from 'react';
-import NewComp from "./NewComp";
+import React from 'react';
+import './App.css';
+import TodoList, {TaskType} from "./TodoList";
+// rsc - создать компоненту
 
-type currencyType = 'dol' | 'rub' | 'all'
-
-const App = () => {
-
-    const [money, setMoney] = useState([
-        {banknots: 'Dollars', value: 100, number: ' a1234567890'},
-        {banknots: 'Dollars', value: 50, number: ' z1234567890'},
-        {banknots: 'RUBLS', value: 100, number: ' w1234567890'},
-        {banknots: 'Dollars', value: 100, number: ' e1234567890'},
-        {banknots: 'Dollars', value: 50, number: ' c1234567890'},
-        {banknots: 'RUBLS', value: 100, number: ' r1234567890'},
-        {banknots: 'Dollars', value: 50, number: ' x1234567890'},
-        {banknots: 'RUBLS', value: 50, number: ' v1234567890'},
-    ])
-
-    let [curr, setCurr] = useState<currencyType>('rub')
-
-    let filterBanknots = money
-    if(curr=='rub') {filterBanknots = money.filter((filt) =>
-        filt.banknots == 'RUBLS')}
-    if(curr=='dol') {filterBanknots = money.filter((filt) =>
-        filt.banknots == 'Dollars')}
-
-    let onClickHandler = (currency:currencyType) => {setCurr(currency)}
-
+function App() {
+    //BLL:
+    const todoListTitle: string = 'what to learn'
+    const tasks: Array<TaskType> = [
+        {id: 1, title: 'HTML&CSS', isDone: true},
+        {id: 2, title: 'ES6 & TS', isDone: true},
+        {id: 3, title: 'React & Redux', isDone: false},
+    ]
+    //UI:
     return (
-        <>
-            <NewComp arrMoney={money}/>
-            {/*<ul>*/}
-            {/*    {filterBanknots.map((item,index) => {*/}
-            {/*        return (*/}
-            {/*            <li key={index}>*/}
-            {/*                <span> {item.banknots}</span>*/}
-            {/*                <span> {item.value}</span>*/}
-            {/*                <span> {item.number}</span>*/}
-            {/*            </li>*/}
-            {/*        )*/}
-            {/*    })}*/}
-            {/*</ul>*/}
-            {/*<div>*/}
-            {/*    <button onClick={()=>onClickHandler('dol')}>doll</button>*/}
-            {/*    <button onClick={()=>onClickHandler('rub')}>rub</button>*/}
-            {/*    <button onClick={()=>onClickHandler('all')}>all</button>*/}
-            {/*</div>*/}
-        </>
+        <div className="App">
+            <TodoList title={todoListTitle} tasks={tasks}/>
+        </div>
     );
-};
+}
 
 export default App;
