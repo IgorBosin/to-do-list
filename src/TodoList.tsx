@@ -1,13 +1,12 @@
 import React from 'react';
 import TasksList from "./TasksList";
-import {filterValuesType} from "./App";
+import {filterType} from "./App";
 
 type TodolistPropsType = {
     title: String;
     tasks: Array<TaskType>
-    changeFilterValue: (filter: filterValuesType) => void
-    // tasks: TaskType[]
-    removeTasks: (taskId: number) => void
+    removeTask: (taskId: number) => void
+    filtEL: (filt: filterType) => void
 }
 
 export type TaskType = {
@@ -16,7 +15,7 @@ export type TaskType = {
     isDone: boolean;
 }
 
-const TodoList = (props: TodolistPropsType): JSX.Element => {
+const TodoList = (props: TodolistPropsType) => {
     return (
         <div>
             <div className={'TodoList'}>
@@ -25,11 +24,13 @@ const TodoList = (props: TodolistPropsType): JSX.Element => {
                     <input/>
                     <button>+</button>
                 </div>
-                <TasksList tasks={props.tasks} removeTask={props.removeTasks}/>
+                <ul>
+                    <TasksList tasks={props.tasks} removeTask={props.removeTask}/>
+                </ul>
                 <div>
-                    <button onClick={() => props.changeFilterValue('all')}>All</button>
-                    <button onClick={() => props.changeFilterValue('active')}>Active</button>
-                    <button onClick={() => props.changeFilterValue('completed')}>Completed</button>
+                    <button onClick={()=>props.filtEL('all')}>All</button>
+                    <button onClick={()=>props.filtEL('active')}>Active</button>
+                    <button onClick={()=>props.filtEL('completed')}>Completed</button>
                 </div>
             </div>
         </div>
