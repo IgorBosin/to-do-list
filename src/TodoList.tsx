@@ -1,36 +1,74 @@
-import React from 'react';
+import React, {FC, RefObject, useRef, useState} from 'react';
 import TasksList from "./TasksList";
-import {filterValuesType} from "./App";
+import {FilterValuesType} from "./App";
 
-type TodolistPropsType = {
-    title: String;
-    tasks: Array<TaskType>
-    changeFilterValue: (filter: filterValuesType) => void
-    // tasks: TaskType[]
-    removeTasks: (taskId: number) => void
+type TodoListPropsType = {
+    title: string
+    tasks: TaskType[]
+    changeFilterValue: (filter: FilterValuesType) => void
+    removeTask: (taskId: string) => void
+    addTask: (title: string) => void
 }
 
 export type TaskType = {
-    id: number;
-    title: String;
-    isDone: boolean;
+    id: string
+    title: string
+    isDone: boolean
 }
 
-const TodoList = (props: TodolistPropsType): JSX.Element => {
+const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
+    //Uncontrolled form inputs
+
+    // const addTaskInput: RefObject<HTMLInputElement> = useRef(null)
+
+    // const addTasks = ()=>{
+    //     if(addTaskInput.current){
+    //         props.addTask(addTaskInput.current.value)
+    //         addTaskInput.current.value = ''
+    //     }
+    // }
+
+    // const addTasks = ()=>{
+    //     addTaskInput.current && props.addTask(addTaskInput.current.value)
+    // }
+
+    //Controlled form inputs
+    const [title, setTitle] = useState<string>('')
+
+    const addTask = () => {
+        const trimmedTitle = title.trim()
+        if (trimmedTitle) {
+            props.addTask(trimmedTitle)
+        }
+        setTitle('')
+    }
     return (
-        <div>
-            <div className={'TodoList'}>
-                <h3>{props.title}</h3>
-                <div>
-                    <input/>
-                    <button>+</button>
-                </div>
-                <TasksList tasks={props.tasks} removeTask={props.removeTasks}/>
-                <div>
-                    <button onClick={() => props.changeFilterValue('all')}>All</button>
-                    <button onClick={() => props.changeFilterValue('active')}>Active</button>
-                    <button onClick={() => props.changeFilterValue('completed')}>Completed</button>
-                </div>
+        <div className={"todolist"}>
+            <h3>{props.title}</h3>
+            <div>
+                {/*<input ref={addTaskInput}/>*/}
+                {/*<button onClick={addTasks}>+</button>*/}
+                <input
+                    value={title}
+                    onChange={e => setTitle(e.currentTarget.value)}/>
+                {/*<button onClick={() => props.addTask(title)}>+</button>*/}
+                <button disabled={title.length === 0} onClick={addTask}>+</button>
+                {title.length > 15 && <div style={{color: 'hotpink'}}>Task title is to long</div>}
+            </div>
+            <TasksList tasks={props.tasks} removeTask={props.removeTask}/>
+            <div>
+                <button
+                    onClick={() => props.changeFilterValue("all")}
+                >All
+                </button>
+                <button
+                    onClick={() => props.changeFilterValue("active")}
+                >Active
+                </button>
+                <button
+                    onClick={() => props.changeFilterValue("completed")}
+                >Completed
+                </button>
             </div>
         </div>
     );

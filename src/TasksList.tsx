@@ -3,23 +3,22 @@ import {TaskType} from "./TodoList";
 
 type TasksListPropsType = {
     tasks: TaskType[]
-    removeTask: (taskId: number) => void
+    removeTask: (taskId: string) => void
 }
 
-const TasksList: FC<TasksListPropsType> = (props: TasksListPropsType) => {
+const TasksList: FC<TasksListPropsType> = (props): JSX.Element => {
     const tasksItems: JSX.Element[] | JSX.Element =
         props.tasks.length
-            ? props.tasks.map((task) => {
+            ? props.tasks.map((task)=> {
                 return (
                     <li key={task.id}>
                         <input type="checkbox" checked={task.isDone}/>
                         <span>{task.title}</span>
-                        <button onClick={() => props.removeTask(task.id)}>x</button>
+                        <button onClick={() =>props.removeTask(task.id)}>x</button>
                     </li>
                 )
             })
             : <span>Your taskslist is empty</span>
-
     return (
         <ul>
             {tasksItems}
