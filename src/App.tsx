@@ -31,16 +31,19 @@ function App (): JSX.Element {
     const [filter, setFilter] = React.useState<FilterValuesType>("all")
     const changeFilterValue = (filter: FilterValuesType) => setFilter(filter)
 
-    let filteredTasks: Array<TaskType> = []
-    if(filter === "all") {
-        filteredTasks = tasks
+    const getFilteredTasks =(tasks: Array<TaskType>,filter: FilterValuesType): Array<TaskType> => {
+        switch (filter) {
+            case "active":
+                return tasks.filter(t => !t.isDone)
+            case "completed":
+                return tasks.filter(t => t.isDone)
+            default:
+                return tasks
+        }
     }
-    if(filter === "active") {
-        filteredTasks = tasks.filter(t => !t.isDone)
-    }
-    if(filter === "completed") {
-        filteredTasks = tasks.filter(t => t.isDone)
-    }
+
+    const filteredTasks: Array<TaskType> = getFilteredTasks(tasks,filter)
+    console.log(filteredTasks)
     //UI:
     return (
         <div className="App">

@@ -1,4 +1,4 @@
-import React, {FC, RefObject, useRef, useState} from 'react';
+import React, {ChangeEvent, FC, RefObject, useRef, useState} from 'react';
 import TasksList from "./TasksList";
 import {FilterValuesType} from "./App";
 
@@ -42,6 +42,12 @@ const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
         }
         setTitle('')
     }
+    const onKeyDownAddTask = (e: React.KeyboardEvent<HTMLInputElement> ) => e.key=== 'Enter' && addTask()
+    const setAllFilterValue = () => props.changeFilterValue("all")
+    const setActiveFilterValue = () => props.changeFilterValue("active")
+    const setCompletedFilterValue = () => props.changeFilterValue("completed")
+    const changeLocalTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
+
     return (
         <div className={"todolist"}>
             <h3>{props.title}</h3>
@@ -50,25 +56,17 @@ const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
                 {/*<button onClick={addTasks}>+</button>*/}
                 <input
                     value={title}
-                    onChange={e => setTitle(e.currentTarget.value)}/>
+                    onChange={changeLocalTitle}
+                    onKeyDown={onKeyDownAddTask}/>
                 {/*<button onClick={() => props.addTask(title)}>+</button>*/}
                 <button disabled={title.length === 0} onClick={addTask}>+</button>
                 {title.length > 15 && <div style={{color: 'hotpink'}}>Task title is to long</div>}
             </div>
             <TasksList tasks={props.tasks} removeTask={props.removeTask}/>
             <div>
-                <button
-                    onClick={() => props.changeFilterValue("all")}
-                >All
-                </button>
-                <button
-                    onClick={() => props.changeFilterValue("active")}
-                >Active
-                </button>
-                <button
-                    onClick={() => props.changeFilterValue("completed")}
-                >Completed
-                </button>
+                <button onClick={setAllFilterValue}>All</button>
+                <button onClick={setActiveFilterValue}>Active</button>
+                <button onClick={setCompletedFilterValue}>Completed</button>
             </div>
         </div>
     );
