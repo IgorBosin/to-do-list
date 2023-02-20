@@ -16,7 +16,6 @@ function App (): JSX.Element {
         const updatedTasks = tasks.filter(t => t.id !== taskId)
         setTasks(updatedTasks)
     }
-
     const addTask = (title: string) => {
         const newTask: TaskType = {
             id: v1(),
@@ -26,6 +25,9 @@ function App (): JSX.Element {
         // setTasks([newTask, ...tasks])
         const updatedTasks: TaskType[] = [newTask, ...tasks]
         setTasks(updatedTasks)
+    }
+    const changeTasksStatus = (taskId: string) => {
+        setTasks(tasks.map(el=>el.id === taskId ? {...el, isDone: !el.isDone} : el))
     }
 
     const [filter, setFilter] = React.useState<FilterValuesType>("all")
@@ -53,6 +55,7 @@ function App (): JSX.Element {
                 changeFilterValue={changeFilterValue}
                 removeTask={removeTask}
                 addTask={addTask}
+                changeTasksStatus={changeTasksStatus}
             />
         </div>
     );
