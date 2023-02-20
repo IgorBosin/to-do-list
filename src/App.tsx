@@ -50,6 +50,7 @@ function App (): JSX.Element {
     return (
         <div className="App">
             <TodoList
+                filter={filter}
                 title={todoListTitle}
                 tasks={filteredTasks}
                 changeFilterValue={changeFilterValue}

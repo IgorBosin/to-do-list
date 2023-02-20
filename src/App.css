@@ -16,8 +16,26 @@
     color: red;
 }
 
-.active-filter {
+.active-filter-btn {
     background-color: aquamarine;
+    font-weight: bold;
+    color: black;
+    border: 2px solid aquamarine;
+    border-radius: 3px;
+}
+
+
+.filter-btn {
+    background-color: hotpink;
+    font-weight: bold;
+    color: black;
+    border: 2px solid hotpink;
+    border-radius: 3px;
+}
+
+.filter-btn-container {
+    display: flex;
+    justify-content: space-between;
 }
 
 .is-done {
@@ -37,4 +55,9 @@
 
 .task {
     font-weight: bold;
+}
+
+.input-error {
+    border: 2px solid red;
+    outline: none;
 }
