@@ -1,32 +1,40 @@
 
 .App {
-  padding: 30px;
-  display: flex;
+    padding: 30px;
+    display: flex;
 }
 
 .App > div {
-  margin-right: 50px;
+    margin-right: 50px;
 }
 
 .error {
-  border: red 1px solid;
+    border: red 1px solid;
 }
 
 .error-message {
-  color: red;
+    color: red;
 }
 
 .active-filter {
-  background-color: aquamarine;
+    background-color: aquamarine;
 }
 
 .is-done {
-  opacity: 0.5;
+    opacity: 0.5;
 }
 
 .todolist {
-  border: 2px solid hotpink;
-  border-radius: 5px;
-  padding: 20px;
+    border: 2px solid hotpink;
+    border-radius: 5px;
+    padding: 20px;
 }
 
+.task-done {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.task {
+    font-weight: bold;
+}

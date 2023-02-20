@@ -26,8 +26,8 @@ function App (): JSX.Element {
         const updatedTasks: TaskType[] = [newTask, ...tasks]
         setTasks(updatedTasks)
     }
-    const changeTasksStatus = (taskId: string) => {
-        setTasks(tasks.map(el=>el.id === taskId ? {...el, isDone: !el.isDone} : el))
+    const changeTasksStatus = (taskId: string, newIsDone: boolean) => {
+        setTasks(tasks.map(el=>el.id === taskId ? {...el, isDone: newIsDone} : el))
     }
 
     const [filter, setFilter] = React.useState<FilterValuesType>("all")
