@@ -1,40 +1,55 @@
-import React from 'react';
-import {FilterPropsType} from "./App";
+import React, {ChangeEvent} from 'react';
 
 type TodoListType = {
     tasks: TasksType[]
-    deleteTask: (taskID: number) => void
-    filterTasks: (title: FilterPropsType) => void
+    addTask: (title: string) => void
+    setTitle: (title: string) => void
+    title: string
+    deleteTask: (taskID: string) => void
+    filtredTask: (filter: string) => void
 }
 
 type TasksType = {
-    id: number
+    id: string
     title: string
     isDone: boolean
 }
 
 export const TodoList = (props: TodoListType) => {
 
-    const onClickHandler = (title: FilterPropsType) => {
-        props.filterTasks(title)
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        props.setTitle(e.currentTarget.value)
     }
+
+    const onClickAddTaskHandler = () => {
+        props.addTask(props.title)
+        props.setTitle('')
+    }
+
+    const onClickChangeFilterHandler = (title: string) => () => {
+        props.filtredTask(title)
+    }
+
+    // const onClickChangeFilterHandler = (filter: string) => props.filtredTask(filter)
+    // <button onClick={()=>onClickChangeFilterHandler('all')}>All</button>
+
 
     return (
         <div>
             <div>
-                <input/>
-                <button>+</button>
+                <input value={props.title} onChange={onChangeHandler}/>
+                <button onClick={onClickAddTaskHandler}>+</button>
             </div>
             <ul>
                 {props.tasks.map(el => {
 
-                    const onClickHandler = () => {
+                    const onClickDeleteTaskHandler = () => {
                         props.deleteTask(el.id)
                     }
 
                     return (
                         <li key={el.id}>
-                            <button onClick={onClickHandler}>X</button>
+                            <button onClick={onClickDeleteTaskHandler}>X</button>
                             <input type="checkbox" checked={el.isDone}/>
                             <span>{el.title}</span>
                         </li>
@@ -42,15 +57,9 @@ export const TodoList = (props: TodoListType) => {
                 })}
             </ul>
             <div>
-                <button
-                    onClick={() => onClickHandler('all')}>All
-                </button>
-                <button
-                    onClick={() => onClickHandler('active')}>Active
-                </button>
-                <button
-                    onClick={() => onClickHandler('completed')}>Completed
-                </button>
+                <button onClick={onClickChangeFilterHandler('all')}>All</button>
+                <button onClick={onClickChangeFilterHandler('completed')}>Completed</button>
+                <button onClick={onClickChangeFilterHandler('active')}>Active</button>
             </div>
         </div>
     );
