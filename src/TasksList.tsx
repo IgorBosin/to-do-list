@@ -3,8 +3,9 @@ import {TaskType} from "./TodoList";
 
 type TasksListPropsType = {
     tasks: TaskType[]
-    removeTask: (taskId: string) => void
-    changeTasksStatus: (taskId: string, newIsDone: boolean) => void
+    removeTask: (todoListId: string,taskId: string) => void
+    changeTaskStatus: (todoListId: string, taskId: string, newIsDone: boolean) => void
+    todoListId: string
 }
 
 const TasksList: FC<TasksListPropsType> = (props): JSX.Element => {
@@ -12,8 +13,8 @@ const TasksList: FC<TasksListPropsType> = (props): JSX.Element => {
         props.tasks.length
             ? props.tasks.map((task) => {
                 const taskClasses = task.isDone ? 'task task-done' : 'task'
-                const removeTaskHandler = () => props.removeTask(task.id)
-                const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTasksStatus(task.id, e.currentTarget.checked )
+                const removeTaskHandler = () => props.removeTask(props.todoListId, task.id)
+                const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(props.todoListId, task.id, e.currentTarget.checked )
                 return (
                     <li key={task.id}>
                         <input

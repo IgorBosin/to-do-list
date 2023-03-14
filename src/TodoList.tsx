@@ -6,10 +6,12 @@ type TodoListPropsType = {
     title: string
     filter: FilterValuesType
     tasks: TaskType[]
-    changeFilterValue: (filter: FilterValuesType) => void
-    removeTask: (taskId: string) => void
-    addTask: (title: string) => void
-    changeTasksStatus: (taskId: string, newIsDone: boolean) => void
+    removeTask: (todoListId: string, taskId: string) => void
+    addTask: (todoListId: string, title: string) => void
+    changeTaskStatus: (todoListId: string, taskId: string, newIsDone: boolean) => void
+    changeTodoListFilter: (todoListId: string, value: FilterValuesType) => void
+    todoListId: string
+    removeTodoList: (todoListId: string) => void
 }
 
 export type TaskType = {
@@ -39,7 +41,7 @@ const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
     const [error, setError] = useState<boolean>(false)
 
 
-    const handlerCreator = (filter: FilterValuesType) => () => props.changeFilterValue(filter)
+    const handlerCreator = (filter: FilterValuesType) => () => props.changeTodoListFilter(props.todoListId, filter)
 
 
     const maxLengthUserMessage: number = 15
@@ -48,7 +50,7 @@ const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
     const addTask = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle) {
-            props.addTask(trimmedTitle)
+            props.addTask(props.todoListId, trimmedTitle)
         } else {
             setError(true)
         }
@@ -82,7 +84,11 @@ const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
                 {userMaxLengthMessage}
                 {userErrorMessage}
             </div>
-            <TasksList changeTasksStatus={props.changeTasksStatus} tasks={props.tasks} removeTask={props.removeTask}/>
+            <TasksList
+                changeTaskStatus={props.changeTaskStatus}
+                tasks={props.tasks}
+                todoListId={props.todoListId}
+                removeTask={props.removeTask}/>
             <div className={'filter-btn-container'}>
                 <button className={props.filter === 'all' ? 'active-filter-btn' : 'filter-btn'}
                         onClick={handlerCreator("all")}>All
