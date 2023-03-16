@@ -1,6 +1,8 @@
 import React, {ChangeEvent, FC, RefObject, useRef, useState} from 'react';
 import TasksList from "./TasksList";
 import {FilterValuesType} from "./App";
+import {AddItemForm} from "./AddItemForm";
+import EditableSpan from "./EditableSpan";
 
 type TodoListPropsType = {
     title: string
@@ -12,6 +14,8 @@ type TodoListPropsType = {
     changeTodoListFilter: (todoListId: string, value: FilterValuesType) => void
     todoListId: string
     removeTodoList: (todoListId: string) => void
+    changeTitleTask: (todoListId: string, taskId: string, newTitle: string) => void
+    changeTitleTodolist: (todoListId: string, newTitle: string) => void
 }
 
 export type TaskType = {
@@ -21,74 +25,26 @@ export type TaskType = {
 }
 
 const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
-    //Uncontrolled form inputs
-
-    // const addTaskInput: RefObject<HTMLInputElement> = useRef(null)
-
-    // const addTasks = ()=>{
-    //     if(addTaskInput.current){
-    //         props.addTask(addTaskInput.current.value)
-    //         addTaskInput.current.value = ''
-    //     }
-    // }
-
-    // const addTasks = ()=>{
-    //     addTaskInput.current && props.addTask(addTaskInput.current.value)
-    // }
-
-    //Controlled form inputs
-    const [title, setTitle] = useState<string>('')
-    const [error, setError] = useState<boolean>(false)
-
-
+    const addTask = (newTitle: string) => props.addTask(props.todoListId, newTitle)
     const handlerCreator = (filter: FilterValuesType) => () => props.changeTodoListFilter(props.todoListId, filter)
+    const removeTodoList = () => props.removeTodoList(props.todoListId)
 
-
-    const maxLengthUserMessage: number = 15
-    const isUserMessageToLong: boolean = title.length > maxLengthUserMessage
-
-    const addTask = () => {
-        const trimmedTitle = title.trim()
-        if (trimmedTitle) {
-            props.addTask(props.todoListId, trimmedTitle)
-        } else {
-            setError(true)
-        }
-        setTitle('')
-    }
-    const onKeyDownAddTask = (e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addTask()
-    const changeLocalTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        error && setError(false)
-        setTitle(e.currentTarget.value)
-    }
-
-    const inputErrorClasses = error || isUserMessageToLong ? 'input-error' : ''
-    const userMaxLengthMessage = isUserMessageToLong && <div style={{color: 'hotpink'}}>Task title is to long</div>
-    const userErrorMessage = error && <div style={{color: 'hotpink'}}>Title is required</div>
-    const isAddBtnDisabled = title.length === 0
+    const changeTitleTodolistHandler = (newTitle: string) => props.changeTitleTodolist(props.todoListId, newTitle)
 
     return (
         <div className={"todolist"}>
-            <h3>{props.title}</h3>
-            <div>
-                {/*<input ref={addTaskInput}/>*/}
-                {/*<button onClick={addTasks}>+</button>*/}
-                <input
-                    className={inputErrorClasses}
-                    value={title}
-                    placeholder='Please, enter title'
-                    onChange={changeLocalTitle}
-                    onKeyDown={onKeyDownAddTask}/>
-                {/*<button onClick={() => props.addTask(title)}>+</button>*/}
-                <button disabled={isAddBtnDisabled} onClick={addTask}>+</button>
-                {userMaxLengthMessage}
-                {userErrorMessage}
-            </div>
+            <h3>
+                <EditableSpan title={props.title} changeTitle={changeTitleTodolistHandler}/>
+                <button onClick={removeTodoList}>X</button>
+            </h3>
+            <AddItemForm maxLengthUserMessage={15} addNewItem={addTask}/>
             <TasksList
+                changeTitleTask={props.changeTitleTask}
                 changeTaskStatus={props.changeTaskStatus}
                 tasks={props.tasks}
                 todoListId={props.todoListId}
                 removeTask={props.removeTask}/>
+
             <div className={'filter-btn-container'}>
                 <button className={props.filter === 'all' ? 'active-filter-btn' : 'filter-btn'}
                         onClick={handlerCreator("all")}>All

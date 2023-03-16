@@ -16,3 +16,9 @@
 16. return origin version after lesson #2
 17. controlled and uncontrolled form input
 18. refactoring app. lesson #3
+19. lesson #4(changeTasksStatus 1 version) 
+20. lesson #4(className 1 version) 
+21. lesson #4(className 2 version) 
+22. lesson #4(className 3 version) 
+23. lesson #4
+24. lesson #5
