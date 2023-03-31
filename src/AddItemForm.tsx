@@ -1,58 +1,49 @@
-import React, {ChangeEvent, FC, useState} from 'react';
-import {FilterValuesType} from "./App";
-import {Simulate} from "react-dom/test-utils";
-import input = Simulate.input;
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {IconButton, TextField} from "@mui/material";
+import {AddBox} from "@mui/icons-material";
 
-type AddItemFormType = {
-    addNewItem: (newTitle: string) => void
-    maxLengthUserMessage: number
+type AddItemFormPropsType = {
+    addItem: (title: string) => void
 }
 
-export const AddItemForm: FC<AddItemFormType> = (
-    {
-        maxLengthUserMessage,
-        addNewItem,
-    }) => {
-    const [title, setTitle] = useState('')
-    const [error, setError] = useState<boolean>(false)
+export function AddItemForm(props: AddItemFormPropsType) {
 
-    const changeLocalTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        error && setError(false)
+    let [title, setTitle] = useState("")
+    let [error, setError] = useState<string | null>(null)
+
+    const addItem = () => {
+        if (title.trim() !== "") {
+            props.addItem(title);
+            setTitle("");
+        } else {
+            setError("Title is required");
+        }
+    }
+
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
-    const addItem = () => {
-        const trimmedTitle = title.trim()
-        if (trimmedTitle) {
-            addNewItem(title)
-        } else {
-            setError(true)
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        setError(null);
+        if (e.charCode === 13) {
+            addItem();
         }
-        setTitle('')
     }
-    const onKeyDownAddItem = (e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addItem()
 
-    const userErrorMessage = error && <div style={{color: 'hotpink'}}>Title is required</div>
-    const isUserMessageToLong: boolean = title.length > maxLengthUserMessage
+    return <div>
+        <TextField
+            variant="standard"
+            value={title}
+            label={'Enter title'}
+            onChange={onChangeHandler}
+            onKeyPress={onKeyPressHandler}
+            error={!!error}
+            helperText={error}
+        />
+        <IconButton onClick={addItem} color={"primary"}>
+            <AddBox/>
+        </IconButton>
 
-    const isAddBtnDisabled = title.length === 0 || isUserMessageToLong || error
-    const userMaxLengthMessage = isUserMessageToLong && <div style={{color: 'hotpink'}}>Task title is to long</div>
-    const inputErrorClasses = error || isUserMessageToLong ? 'input-error' : ''
-
-    return (
-        <div>
-            <input
-                className={inputErrorClasses}
-                value={title}
-                onKeyDown={onKeyDownAddItem}
-                placeholder='Please, enter title'
-                onChange={changeLocalTitle}/>
-            <button
-                disabled={isAddBtnDisabled}
-                onClick={addItem}>+
-            </button>
-            {userMaxLengthMessage}
-            {userErrorMessage}
-        </div>
-    );
-};
-
+    </div>
+}
