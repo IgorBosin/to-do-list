@@ -3,6 +3,9 @@ import './App.css';
 import TodoList, {TaskType} from "./TodoList";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
+import {SizeCheckboxes} from "./SizeCheckboxes";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -104,27 +107,55 @@ function App() {
     const todoListComponents = todoLists.map(el => {
         const filtredTasks: TaskType[] = getFiltredTasks(tasks[el.id], el.filter)
         return (
-            <TodoList
-                key={el.id}
-                title={el.title}
-                tasks={filtredTasks}
-                removeTask={removeTask}
-                changeTodoListFilter={changeTodoListFilter}
-                addTask={addTask}
-                changeTaskStatus={changeTaskStatus}
-                filter={el.filter}
-                todoListId={el.id}
-                removeTodoList={removeTodoList}
-                changeTitleTask={changeTitleTask}
-                changeTitleTodolist={changeTitleTodolist}
-            />
+            <Grid item>
+                <Paper sx={{p: '10px'}} elevation={10}>
+                    <TodoList
+                        key={el.id}
+                        title={el.title}
+                        tasks={filtredTasks}
+                        removeTask={removeTask}
+                        changeTodoListFilter={changeTodoListFilter}
+                        addTask={addTask}
+                        changeTaskStatus={changeTaskStatus}
+                        filter={el.filter}
+                        todoListId={el.id}
+                        removeTodoList={removeTodoList}
+                        changeTitleTask={changeTitleTask}
+                        changeTitleTodolist={changeTitleTodolist}
+                    />
+                </Paper>
+            </Grid>
         )
     })
 
     return (
         <div className="App">
-            <AddItemForm maxLengthUserMessage={15} addNewItem={addTodolist}/>
-            {todoListComponents}
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{mr: 2}}
+                    >
+                        <MenuIcon/>
+                    </IconButton>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                        TodoList
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+            {/*<SizeCheckboxes/>*/}
+            <Container fixed>
+                <Grid sx={{p: '10px 0'}} container>
+                    <AddItemForm maxLengthUserMessage={15} addNewItem={addTodolist}/>
+                </Grid>
+                <Grid spacing={2} container>
+                    {todoListComponents}
+                </Grid>
+            </Container>
         </div>
     );
 }

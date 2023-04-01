@@ -1,6 +1,8 @@
 import React, {ChangeEvent, FC} from 'react';
 import {TaskType} from "./TodoList";
 import EditableSpan from "./EditableSpan";
+import {Checkbox, IconButton} from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 type TasksListPropsType = {
     tasks: TaskType[]
@@ -25,16 +27,19 @@ const TasksList: FC<TasksListPropsType> = (props): JSX.Element => {
                 const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(props.todoListId, task.id, e.currentTarget.checked)
                 return (
                     <li key={task.id}>
-                        <input
-                            type="checkbox"
+                        <Checkbox
+                            size={'small'}
                             checked={task.isDone}
                             onChange={changeTaskStatusHandler}
-                        />
+                            color="success"/>
                         <span className={taskClasses}>
                           <EditableSpan changeTitle={changeTaskTitleHandler} title={task.title}
                                         spanClasses={taskClasses}/>
                         </span>
-                        <button onClick={removeTaskHandler}>x</button>
+                        <IconButton size={'small'} color={'default'} onClick={removeTaskHandler}>
+                            <DeleteForeverIcon/>
+                        </IconButton>
+
                     </li>
                 )
             })

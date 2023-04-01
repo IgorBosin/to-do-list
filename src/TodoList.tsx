@@ -1,8 +1,10 @@
-import React, {ChangeEvent, FC, RefObject, useRef, useState} from 'react';
+import React, {FC} from 'react';
 import TasksList from "./TasksList";
 import {FilterValuesType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
+import {Button, ButtonGroup, IconButton} from "@mui/material";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 type TodoListPropsType = {
     title: string
@@ -35,7 +37,9 @@ const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
         <div className={"todolist"}>
             <h3>
                 <EditableSpan title={props.title} changeTitle={changeTitleTodolistHandler}/>
-                <button onClick={removeTodoList}>X</button>
+                <IconButton size={'small'} color={'default'} onClick={removeTodoList}>
+                    <DeleteForeverIcon/>
+                </IconButton>
             </h3>
             <AddItemForm maxLengthUserMessage={15} addNewItem={addTask}/>
             <TasksList
@@ -46,15 +50,25 @@ const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
                 removeTask={props.removeTask}/>
 
             <div className={'filter-btn-container'}>
-                <button className={props.filter === 'all' ? 'active-filter-btn' : 'filter-btn'}
+                <ButtonGroup
+                    fullWidth
+                    color={'primary'}
+                    size='small'
+                    disableElevation
+                >
+                    <Button
+                        variant={props.filter === 'all' ? 'contained' : 'outlined'}
                         onClick={handlerCreator("all")}>All
-                </button>
-                <button className={props.filter === 'active' ? 'active-filter-btn' : 'filter-btn'}
+                    </Button>
+                    <Button
+                        variant={props.filter === 'active' ? 'contained' : 'outlined'}
                         onClick={handlerCreator("active")}>Active
-                </button>
-                <button className={props.filter === 'completed' ? 'active-filter-btn' : 'filter-btn'}
+                    </Button>
+                    <Button
+                        variant={props.filter === 'completed' ? 'contained' : 'outlined'}
                         onClick={handlerCreator("completed")}>Completed
-                </button>
+                    </Button>
+                </ButtonGroup>
             </div>
         </div>
     );
