@@ -1,30 +1,27 @@
 import React, {ChangeEvent, useState} from 'react';
 
-type PropsType = {
-    oldTitle: string
-    callback: (newTitle:string)=>void
+type EditableSpanPropsType = {
+    value: string
+    onChange: (newValue: string) => void
 }
 
-const EditableSpan = (props: PropsType) => {
-    let [newTitle, setNewTitle] = useState(props.oldTitle)
-    const [edit, setEdit] = useState(false)
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTitle(e.currentTarget.value)
+export function EditableSpan(props: EditableSpanPropsType) {
+    let [editMode, setEditMode] = useState(false);
+    let [title, setTitle] = useState(props.value);
+
+    const activateEditMode = () => {
+        setEditMode(true);
+        setTitle(props.value);
     }
-    const editHandler = () => {
-        setEdit(!edit)
-        addTask()
+    const activateViewMode = () => {
+        setEditMode(false);
+        props.onChange(title);
     }
-    const addTask = () => {
-        props.callback(newTitle)
+    const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
     }
 
-
-    return (
-        edit
-            ? <input onChange={onChangeHandler} autoFocus onBlur={editHandler} value={newTitle}/>
-            : <span onDoubleClick={editHandler}>{props.oldTitle}</span>
-    );
-};
-
-export default EditableSpan;
+    return editMode
+        ? <input value={title} onChange={changeTitle} autoFocus onBlur={activateViewMode}/>
+        : <span onDoubleClick={activateEditMode}>{props.value}</span>
+}
