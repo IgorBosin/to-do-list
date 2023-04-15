@@ -15,7 +15,6 @@ const EditableSpan: FC<EditableSpanType> = (
         changeTitle
     }) => {
     const [editMode, setEditMode] = useState<boolean>(false)
-    // const [newTitle, setNewTitle] = useState('')
     const changeLocalTitle = (e: ChangeEvent<HTMLInputElement>) => changeTitle(e.currentTarget.value)
     const onEditMode = () => {
         setEditMode(true)
@@ -34,6 +33,7 @@ const EditableSpan: FC<EditableSpanType> = (
                 autoFocus
                 onBlur={offEditMode}
                 onChange={changeLocalTitle}
+                onKeyDown={(e)=>e.key==='Enter' && offEditMode()}
             />
             // ? <input autoFocus onBlur={offEditMode} onChange={changeLocalTitle} value={newTitle}/>
             : <span onDoubleClick={onEditMode} className={spanClasses}>{title}</span>
