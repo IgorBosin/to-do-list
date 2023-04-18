@@ -1,64 +1,26 @@
+/*
+.App {
+  padding: 30px;
+  display: flex;
+}
 
-/*.App {*/
-/*    padding: 30px;*/
-/*    display: flex;*/
-/*}*/
+.App > div {
+  margin-right: 50px;
+}
 
-/*.App > div {*/
-/*    margin-right: 50px;*/
-/*}*/
+.error {
+  border: red 1px solid;
+}
 
-/*.error {*/
-/*    border: red 1px solid;*/
-/*}*/
+.error-message {
+  color: red;
+}
 
-/*.error-message {*/
-/*    color: red;*/
-/*}*/
-
-/*.active-filter-btn {*/
-/*    background-color: aquamarine;*/
-/*    font-weight: bold;*/
-/*    color: black;*/
-/*    border: 2px solid aquamarine;*/
-/*    border-radius: 3px;*/
-/*}*/
-
-
-/*.filter-btn {*/
-/*    background-color: hotpink;*/
-/*    font-weight: bold;*/
-/*    color: black;*/
-/*    border: 2px solid hotpink;*/
-/*    border-radius: 3px;*/
-/*}*/
-
-/*.filter-btn-container {*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*}*/
+.active-filter {
+  background-color: aquamarine;
+}
 
 .is-done {
-    opacity: 0.5;
+  opacity: 0.5;
 }
-
-/*.todolist {*/
-/*    height: max-content;*/
-/*    border: 2px solid hotpink;*/
-/*    border-radius: 5px;*/
-/*    padding: 20px;*/
-/*}*/
-
-.task-done {
-    text-decoration: line-through;
-    opacity: 0.5;
-}
-
-/*.task {*/
-/*    font-weight: bold;*/
-/*}*/
-
-/*.input-error {*/
-/*    border: 2px solid red;*/
-/*    outline: none;*/
-/*}*/
+*/
