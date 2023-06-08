@@ -1,4 +1,4 @@
-import React, {Reducer, useReducer, useState} from 'react';
+import React, {useReducer} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
@@ -7,7 +7,7 @@ import {AppBar, Button, Container, Grid, Paper, Toolbar, Typography} from "@mui/
 import IconButton from "@mui/material/IconButton/IconButton";
 import {Menu} from "@mui/icons-material";
 import {
-    ActionsType, addTodolistAC,
+    addTodolistAC,
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     removeTodolistAC,
@@ -32,7 +32,7 @@ function AppWithReducers() {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
-    let [todolists, dispatchToTodolists] = useReducer<Reducer<Array<TodolistType>, ActionsType>>(todolistsReducer, [
+    let [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ])
@@ -50,9 +50,7 @@ function AppWithReducers() {
 
 
     function removeTask(id: string, todolistId: string) {
-        const action = removeTaskAC(id, todolistId)
-        dispatchToTasks(action)
-        // dispatchToTasks(removeTaskAC(id, todolistId))
+        dispatchToTasks(removeTaskAC(id, todolistId))
     }
 
     function addTask(title: string, todolistId: string) {
@@ -67,16 +65,13 @@ function AppWithReducers() {
         dispatchToTasks(changeTaskTitleAC(id, newTitle, todolistId))
     }
 
-
     function changeFilter(value: FilterValuesType, todolistId: string) {
         dispatchToTodolists(changeTodolistFilterAC(todolistId, value))
     }
 
     function removeTodolist(id: string) {
-        const action = removeTodolistAC(id)
-        dispatchToTodolists(action)
-        dispatchToTasks(action)
-
+        dispatchToTodolists(removeTodolistAC(id))
+        dispatchToTasks(removeTodolistAC(id))
     }
 
     function changeTodolistTitle(id: string, title: string) {
