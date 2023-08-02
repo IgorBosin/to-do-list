@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
 import TextField from '@mui/material/TextField';
 
 type EditableSpanPropsType = {
@@ -19,11 +19,19 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
         setEditMode(false);
         props.onChange(title);
     }
+
+    const activateViewModeOnKey = (e: KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter') {
+            setEditMode(false);
+            props.onChange(title);
+        }
+    }
     const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
 
     return editMode
-        ? <TextField value={title} onChange={changeTitle} autoFocus onBlur={activateViewMode}/>
+        ? <TextField value={title} onChange={changeTitle} autoFocus onKeyDown={activateViewModeOnKey}
+                     onBlur={activateViewMode}/>
         : <span onDoubleClick={activateEditMode}>{props.value}</span>
 });
