@@ -1,9 +1,15 @@
-import React, { ChangeEvent, useCallback } from 'react'
-import { EditableSpan } from './EditableSpan'
-import { Delete } from '@mui/icons-material';
+import React, {ChangeEvent, useCallback} from 'react'
+import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan'
+import {TaskStatuses, TaskType} from '../../../../api/todolists-api'
+
+import {Delete} from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
 import Checkbox from '@mui/material/Checkbox';
-import { TaskStatuses, TaskType } from './api/todolists-api'
+import {useSelector} from "react-redux";
+import {useAppSelector} from "../../../../app/store";
+import {TodolistDomainType} from "../../todolists-reducer";
+import {TasksStateType} from "../../tasks-reducer";
+import {RequestStatusType} from "../../../../app/appReducer";
 
 type TaskPropsType = {
     task: TaskType
@@ -13,9 +19,8 @@ type TaskPropsType = {
     removeTask: (taskId: string, todolistId: string) => void
 }
 export const Task = React.memo((props: TaskPropsType) => {
-
     const onClickHandler = useCallback(() => props.removeTask(props.task.id, props.todolistId), [props.task.id, props.todolistId]);
-
+    const disableButton = useAppSelector<RequestStatusType>(state => state.tasks[props.todolistId].filter(el => el.id === props.task.id)[0].entityStatus)
     const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue = e.currentTarget.checked
         props.changeTaskStatus(props.task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.todolistId)
@@ -30,10 +35,11 @@ export const Task = React.memo((props: TaskPropsType) => {
             checked={props.task.status === TaskStatuses.Completed}
             color="primary"
             onChange={onChangeHandler}
+            disabled={disableButton === 'loading'}
         />
 
         <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
-        <IconButton onClick={onClickHandler}>
+        <IconButton disabled={disableButton === 'loading'} onClick={onClickHandler}>
             <Delete/>
         </IconButton>
     </div>
