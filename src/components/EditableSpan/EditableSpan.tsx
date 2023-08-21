@@ -1,9 +1,12 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import TextField from '@mui/material/TextField';
+import {RequestStatusType} from "../../app/app-reducer";
+
 
 type EditableSpanPropsType = {
     value: string
     onChange: (newValue: string) => void
+    entityStatus: RequestStatusType
 }
 
 export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
@@ -11,9 +14,13 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
     let [editMode, setEditMode] = useState(false);
     let [title, setTitle] = useState(props.value);
 
+    const isDisabled = props.entityStatus === 'loading'
+
     const activateEditMode = () => {
-        setEditMode(true);
-        setTitle(props.value);
+        if (!isDisabled) {
+            setEditMode(true);
+            setTitle(props.value);
+        }
     }
     const activateViewMode = () => {
         setEditMode(false);
@@ -25,5 +32,5 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
 
     return editMode
         ? <TextField value={title} onChange={changeTitle} autoFocus onBlur={activateViewMode}/>
-        : <span onDoubleClick={activateEditMode}>{props.value}</span>
+        : <span style={{ textDecoration: isDisabled ? 'line-through' : 'none' }} onDoubleClick={activateEditMode}>{props.value}</span>
 });
