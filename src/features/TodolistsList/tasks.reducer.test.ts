@@ -1,6 +1,6 @@
-import { tasksReducer, TasksStateType, tasksThunks } from "features/TodolistsList/tasks.reducer";
-import { TaskPriorities, TaskStatuses, TaskType } from "api/todolists-api";
-import { todolistsThunk } from "features/TodolistsList/todolists.reducer";
+import { TaskPriorities, TaskStatuses } from "common/enums";
+import { tasksActions, tasksReducer, TasksStateType, tasksThunks } from "features/TodolistsList/tasks.reducer";
+import { todolistsActions, todolistsThunks } from "features/TodolistsList/todolists.reducer";
 
 let startState: TasksStateType = {};
 beforeEach(() => {
@@ -85,11 +85,8 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-  // const action = tasksActions.removeTask({ taskId: "2", todolistId: "todolistId2" });
-  const action = tasksThunks.removeTask.fulfilled({ taskId: "2", todolistId: "todolistId2" }, "requestId", {
-    taskId: "2",
-    todolistId: "todolistId2",
-  });
+  const args = { taskId: "2", todolistId: "todolistId2" };
+  const action = tasksThunks.removeTask.fulfilled(args, "requestId", args);
 
   const endState = tasksReducer(startState, action);
 
@@ -99,7 +96,8 @@ test("correct task should be deleted from correct array", () => {
 });
 
 test("correct task should be added to correct array", () => {
-  // 1 variant
+  //const action = addTaskAC("juce", "todolistId2");
+
   const task = {
     todoListId: "todolistId2",
     title: "juce",
@@ -118,32 +116,6 @@ test("correct task should be added to correct array", () => {
     todolistId: task.todoListId,
   });
 
-  // 2 variant
-  // type AddTasksType = {
-  //   type: string;
-  //   payload: {
-  //     task: TaskType;
-  //   };
-  // };
-  //
-  // const action: AddTasksType = {
-  //   type: tasksThunks.addTask.fulfilled.type,
-  //   payload: {
-  //     task: {
-  //       todoListId: "todolistId2",
-  //       title: "juce",
-  //       status: TaskStatuses.New,
-  //       addedDate: "",
-  //       deadline: "",
-  //       description: "",
-  //       order: 0,
-  //       priority: 0,
-  //       startDate: "",
-  //       id: "id exists",
-  //     },
-  //   },
-  // };
-
   const endState = tasksReducer(startState, action);
 
   expect(endState["todolistId1"].length).toBe(3);
@@ -154,15 +126,8 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-  const action = tasksThunks.updateTask.fulfilled(
-    {
-      taskId: "2",
-      domainModel: { status: TaskStatuses.New },
-      todolistId: "todolistId2",
-    },
-    "",
-    { taskId: "taskId", todolistId: "todolistId", domainModel: {} }
-  );
+  const args = { taskId: "2", domainModel: { status: TaskStatuses.New }, todolistId: "todolistId2" };
+  const action = tasksThunks.updateTask.fulfilled(args, "requestId", args);
 
   const endState = tasksReducer(startState, action);
 
@@ -171,16 +136,8 @@ test("status of specified task should be changed", () => {
 });
 
 test("title of specified task should be changed", () => {
-  // const action = tasksActions.updateTask({ taskId: "2", model: { title: "yogurt" }, todolistId: "todolistId2" });
-  const action = tasksThunks.updateTask.fulfilled(
-    {
-      taskId: "2",
-      domainModel: { title: "yogurt" },
-      todolistId: "todolistId2",
-    },
-    "",
-    { taskId: "taskId", todolistId: "todolistId", domainModel: {} }
-  );
+  const args = { taskId: "2", domainModel: { title: "yogurt" }, todolistId: "todolistId2" };
+  const action = tasksThunks.updateTask.fulfilled(args, "requestId", args);
 
   const endState = tasksReducer(startState, action);
 
@@ -190,23 +147,19 @@ test("title of specified task should be changed", () => {
 });
 
 test("new array should be added when new todolist is added", () => {
-  const action = todolistsThunk.addTodolist.fulfilled(
-    {
-      todolist: {
-        id: "blabla",
-        title: "new todolist",
-        order: 0,
-        addedDate: "",
-      },
-    },
-    "requestId",
-    ""
-  );
+  const todolist = {
+    id: "blabla",
+    title: "new todolist",
+    order: 0,
+    addedDate: "",
+  };
+
+  const action = todolistsThunks.addTodolist.fulfilled({ todolist }, "requestId", todolist.title);
 
   const endState = tasksReducer(startState, action);
 
   const keys = Object.keys(endState);
-  const newKey = keys.find((k) => k != "todolistId1" && k != "todolistId2");
+  const newKey = keys.find((k) => k !== "todolistId1" && k !== "todolistId2");
   if (!newKey) {
     throw Error("new key should be added");
   }
@@ -215,8 +168,9 @@ test("new array should be added when new todolist is added", () => {
   expect(endState[newKey]).toEqual([]);
 });
 
-test("propertry with todolistId should be deleted", () => {
-  const action = todolistsThunk.removeTodolist.fulfilled({ id: "todolistId2" }, "requestId", "");
+test("property with todolistId should be deleted", () => {
+  const id = "todolistId2";
+  const action = todolistsThunks.removeTodolist.fulfilled({ id }, "requestId", id);
 
   const endState = tasksReducer(startState, action);
 
@@ -227,14 +181,14 @@ test("propertry with todolistId should be deleted", () => {
 });
 
 test("empty arrays should be added when we set todolists", () => {
-  const action = todolistsThunk.fetchTodolists.fulfilled(
+  const action = todolistsThunks.fetchTodolists.fulfilled(
     {
       todolists: [
         { id: "1", title: "title 1", order: 0, addedDate: "" },
         { id: "2", title: "title 2", order: 0, addedDate: "" },
       ],
     },
-    "requestId"
+    "requestId",
   );
 
   const endState = tasksReducer({}, action);
@@ -247,35 +201,21 @@ test("empty arrays should be added when we set todolists", () => {
 });
 
 test("tasks should be added for todolist", () => {
-  // 1 variant
-  // const action = tasksThunks.fetchTasks.fulfilled(
-  //   // 1 арг - то что thunk возвращает, 2 арг - 'requestId'(на тест не влияет), 3 арг - то, что принимает thunk
-  //   { tasks: startState["todolistId1"], todolistId: "todolistId1" },
-  //   "requestId",
-  //   "todolistId1"
-  // );
-
-  // 2 variant
-
-  type FetchTasksType = {
-    type: string;
-    payload: {
-      tasks: TaskType[];
-      todolistId: string;
-    };
-  };
-
-  const action: FetchTasksType = {
-    type: tasksThunks.fetchTasks.fulfilled.type, // "tasks/fetchTasks/fulfilled"
-    payload: { tasks: startState["todolistId1"], todolistId: "todolistId1" },
-  };
+  const action = tasksThunks.fetchTasks.fulfilled(
+    {
+      tasks: startState["todolistId1"],
+      todolistId: "todolistId1",
+    },
+    "requestId",
+    "todolistId1",
+  );
 
   const endState = tasksReducer(
     {
       todolistId2: [],
       todolistId1: [],
     },
-    action
+    action,
   );
 
   expect(endState["todolistId1"].length).toBe(3);
