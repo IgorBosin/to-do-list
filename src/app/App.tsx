@@ -1,39 +1,22 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import {
-  AppBar,
-  Button,
-  CircularProgress,
-  Container,
-  IconButton,
-  LinearProgress,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import { Menu } from "@mui/icons-material";
-import { Login } from "features/auth/Login";
+import { BrowserRouter } from "react-router-dom";
+import { CircularProgress, Container } from "@mui/material";
 import "./App.css";
-import { TodolistsList } from "features/TodolistsList/TodolistsList";
 import { ErrorSnackbar } from "common/components";
-import { selectIsLoggedIn } from "features/auth/auth.selectors";
-import { selectAppStatus, selectIsInitialized } from "app/app.selectors";
-import { authThunk } from "features/auth/auth.reducer";
-import { useActions } from "common/hooks/useActions";
+import { useActions } from "common/hooks";
+import { selectIsInitialized } from "app/app.selectors";
+import { authThunks } from "features/auth/model/auth.slice";
+import Header from "app/ui/Header";
+import AppRoutes from "app/routes/AppRoutes";
 
 function App() {
-  const status = useSelector(selectAppStatus);
   const isInitialized = useSelector(selectIsInitialized);
-  const isLoggedIn = useSelector(selectIsLoggedIn);
 
-  const { logout, initializeApp } = useActions(authThunk);
+  const { initializeApp } = useActions(authThunks);
 
   useEffect(() => {
     initializeApp();
-  }, []);
-
-  const logoutHandler = useCallback(() => {
-    logout();
   }, []);
 
   if (!isInitialized) {
@@ -48,25 +31,9 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <ErrorSnackbar />
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <Menu />
-            </IconButton>
-            <Typography variant="h6">News</Typography>
-            {isLoggedIn && (
-              <Button color="inherit" onClick={logoutHandler}>
-                Log out
-              </Button>
-            )}
-          </Toolbar>
-          {status === "loading" && <LinearProgress />}
-        </AppBar>
+        <Header />
         <Container fixed>
-          <Routes>
-            <Route path={"/"} element={<TodolistsList />} />
-            <Route path={"/login"} element={<Login />} />
-          </Routes>
+          <AppRoutes />
         </Container>
       </div>
     </BrowserRouter>

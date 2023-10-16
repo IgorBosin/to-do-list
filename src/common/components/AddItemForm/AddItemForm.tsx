@@ -1,9 +1,10 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { IconButton, TextField } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
+import { RejectValueType } from "common/utils/create-app-async-thunk";
 
 type AddItemFormPropsType = {
-  addItem: (title: string) => void;
+  addItem: (title: string) => Promise<unknown>;
   disabled?: boolean;
 };
 
@@ -13,22 +14,30 @@ export const AddItemForm = React.memo(function ({ addItem, disabled = false }: A
 
   const addItemHandler = () => {
     if (title.trim() !== "") {
-      addItem(title);
-      setTitle("");
+      addItem(title)
+        .then(() => {
+          setTitle("");
+        })
+        .catch((e: RejectValueType) => {
+          if (e.data) {
+            const messages = e.data.messages;
+            setError(messages.length ? messages[0] : "Some error occurred");
+          }
+        });
     } else {
       setError("Title is required");
     }
   };
 
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const changeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value);
   };
 
-  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+  const onKeyPressAddItemHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (error !== null) {
       setError(null);
     }
-    if (e.charCode === 13) {
+    if (e.key === "Enter") {
       addItemHandler();
     }
   };
@@ -36,12 +45,13 @@ export const AddItemForm = React.memo(function ({ addItem, disabled = false }: A
   return (
     <div>
       <TextField
+        sx={{ width: "300px" }}
         variant="outlined"
         disabled={disabled}
         error={!!error}
         value={title}
-        onChange={onChangeHandler}
-        onKeyPress={onKeyPressHandler}
+        onChange={changeTitleHandler}
+        onKeyDown={onKeyPressAddItemHandler}
         label="Title"
         helperText={error}
       />

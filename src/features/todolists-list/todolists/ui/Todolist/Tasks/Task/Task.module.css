@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 300px;
+    word-wrap: break-word;
+    border-radius: 5px;
+    margin: 5px 0;
+    background-color: rgba(0, 0, 100, 0.07);
+}
+
+.completed {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+.spanCont {
+    font-style: italic;
+    overflow-x: hidden;
+}
